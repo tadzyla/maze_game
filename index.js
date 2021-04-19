@@ -1,7 +1,7 @@
 const { World, Engine, Render, Runner, Bodies, Body, Events } = Matter;
 
-const cellsHorizontal = 5;
-const cellsVertical = 3;
+const cellsHorizontal = 15;
+const cellsVertical = 12;
 const width = window.innerWidth;    // canvas (maze) width
 const height = window.innerHeight;   // canvas (maze) height
 
