@@ -99,15 +99,17 @@ const horizontals = Array(cells - 1)
         // For each neighbor...
         for(let neighbor of neighbours) {
             const[nextRow, nextColumn, direction] = neighbor;  // next neighbor with thinking off
+            console.log(nextRow);
 
             // Check if neighbor is out of bounds
-            if( row < 0      || 
-                row >= cells || 
-                column < 0   || 
-                column >= cells
-                ){
-                continue;  // continue with other neighbor
-            }
+            if (
+                nextRow < 0 ||
+                nextRow >= cells ||
+                nextColumn < 0 ||
+                nextColumn >= cells
+              ) {
+                continue;    // continue wiht other neighbor
+              }
 
             // If we have visited that neighbor, continue with other neighbor
             if(grid[nextRow][nextColumn]) {  // if this is true
@@ -139,12 +141,12 @@ const horizontals = Array(cells - 1)
           if(open){
               return;
           }
-          
-          const wall = Bodies.rectangle(
+
+    const wall = Bodies.rectangle(
               columnIndex * unitLength + unitLength / 2,  // X coordinate
               rowIndex * unitLength + unitLength,         // Y coordinate
               unitLength,                                 // length of the wall
-              10,
+              10,                                         // height of the wall
               {
                   isStatic: true     //doesnt fly around
               }
@@ -152,5 +154,23 @@ const horizontals = Array(cells - 1)
             World.add(world, wall);
         });
   });
-    
+
+  verticals.forEach((row, rowIndex) => {    
+    row.forEach((open, columnIndex) => { 
+        if(open){
+            return;
+        }
+    const wall = Bodies.rectangle(
+        columnIndex * unitLength + unitLength,
+        rowIndex * unitLength + unitLength / 2,
+        10,
+        unitLength,  // height of the wall
+        {
+            isStatic: true
+        }
+    );
+World.add(world, wall);
+
+    });
+});
     
