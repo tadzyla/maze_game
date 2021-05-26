@@ -1,9 +1,9 @@
 const { World, Engine, Render, Runner, Bodies, Body, Events } = Matter;
 
-const cellsHorizontal = 15;
-const cellsVertical = 12;
-const width = window.innerWidth;    // canvas (maze) width
-const height = window.innerHeight;   // canvas (maze) height
+const cellsHorizontal = 14;
+const cellsVertical = 10;
+const width = window.innerWidth - 4;    // canvas (maze) width
+const height = window.innerHeight - 4;   // canvas (maze) height
 
 const unitLengthX = width / cellsHorizontal;  // cell width
 const unitLengthY = height / cellsVertical;  // cell height
@@ -11,6 +11,7 @@ const unitLengthY = height / cellsVertical;  // cell height
 const engine = Engine.create();
 engine.world.gravity.y = 0;  // disabling gravity in Y direction for ball
 const { world } = engine;
+
 const render = Render.create({
     element: document.body,
     engine: engine,
@@ -146,6 +147,7 @@ const horizontals = Array(cellsVertical - 1)
               return;
           }
 
+
     const wall = Bodies.rectangle(
               columnIndex * unitLengthX + unitLengthX / 2,  // X coordinate
               rowIndex * unitLengthY + unitLengthY,         // Y coordinate
@@ -155,7 +157,7 @@ const horizontals = Array(cellsVertical - 1)
                 label: 'wall',  
                 isStatic: true,     //doesnt fly around
                 render : {
-                    fillStyle: 'red'
+                    fillStyle: 'lightCoral'
                 }
               }
               );
@@ -177,7 +179,7 @@ const horizontals = Array(cellsVertical - 1)
             isStatic: true,
             label: 'wall',
             render : {
-                fillStyle: 'red'
+                fillStyle: 'lightCoral'
             }
         }
     );
@@ -196,7 +198,7 @@ const goal = Bodies.rectangle(
         isStatic: true,
         label: 'goal',
         render: {
-            fillStyle: 'green'
+            fillStyle: 'mediumSpringGreen'
         }
     }
 );
@@ -212,7 +214,7 @@ const ball = Bodies.circle(
     {
         label: 'ball',
         render: {
-            fillStyle: 'blue'
+            fillStyle: 'OrangeRed'
         }
     }    
 );
@@ -221,16 +223,16 @@ World.add(world, ball);
 document.addEventListener('keydown', event => {
    const {x, y} = ball.velocity;
 
-    if(event.keyCode === 87) {
+    if(event.keyCode === 38) {
        Body.setVelocity(ball, { x: x, y: y - 5 });  // ball moves up
     }
-    if(event.keyCode === 68) {
+    if(event.keyCode === 39) {
         Body.setVelocity(ball, { x: x + 5, y: y });  // ball moves right
     }
-    if(event.keyCode === 83) {
+    if(event.keyCode === 40) {
         Body.setVelocity(ball, { x: x, y: y + 5 });  // ball moves down
     }
-    if(event.keyCode === 65) {
+    if(event.keyCode === 37) {
         Body.setVelocity(ball, { x: x - 5, y: y });  // ball moves left
     }
 });
@@ -247,13 +249,18 @@ Events.on(engine, 'collisionStart', event => {
         labels.includes(collision.bodyB.label)
         ) 
         {
-            document.querySelector('.winner').classList.remove('.hidden');
+            
+            document.querySelector('.winner').classList.remove('hidden');
             world.gravity.y = 1;
             world.bodies.forEach(body => {
                 if(body.label === 'wall') {
-                    Body.setStatic(body, false);  // walls collapse after ball collides with goal
+                    Body.setStatic(body, false); // walls collapse after ball collides with goal
                 }
+                
             })
         }
+        
     });
 });
+
+
